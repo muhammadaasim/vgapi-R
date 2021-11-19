@@ -15,7 +15,7 @@ export default function Main() {
   return (
     <div className="container mx-auto px-4">
       <h2 className="text-blue-500 uppercase tracking-wide font-semibold">
-        Popular Games
+        Most recent games
       </h2>
       <div className="popular-games text-sm grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 xl:grid-cols-6 gap-12 border-b border-gray-800 pb-16">
         <div className="game mt-8">
@@ -323,7 +323,7 @@ export default function Main() {
       <div className="flex flex-col lg:flex-row my-10">
         <div className="recently-reviewed w-full lg:w-3/4 mr-0 lg:mr-32">
           <h2 className="text-blue-500 uppercase tracking-wide font-semibold">
-            Recently Reviewed
+            Popular Games
           </h2>
           <div className="recently-reviewed-container space-y-12 mt-8">
             <div className="game bg-gray-800 rounded-lg shadow-md flex px-6 py-6">
