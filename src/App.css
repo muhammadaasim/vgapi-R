@@ -1,4 +1,8 @@
-.card-img{
-height:100%;
-width:100%;
+.card-img {
+    width: 220px;
+    height: 270px;
+}
+.img-size {
+  width: 220px;
+  height: 270px;
 }
