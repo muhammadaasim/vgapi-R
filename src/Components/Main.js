@@ -70,9 +70,13 @@ export default function Main () {
                     {d?.name}
                   </Link>
                   <div className='text-gray-400 mt-1'>
-                    {d?.platforms?.map(os => (
-                      <span> {os.platform.name}</span>
-                    ))}
+                    {d?.platforms?.map((os, i, arr) => {
+                      if (arr.length - 1 === i) {
+                        return <span> {os.platform.name}</span>
+                      } else {
+                        return <span> {os.platform.name},</span>
+                      }
+                    })}
                   </div>
                 </div>
               </div>
@@ -86,27 +90,27 @@ export default function Main () {
           <h2 className='text-blue-500 uppercase tracking-wide font-semibold'>
             Popular Games
           </h2>
-          {console.log('pop games', popularGames)}
           <div className='recently-reviewed-container space-y-12 mt-8'>
             {popularGames &&
               popularGames.map(game => {
                 return (
                   <div className='game bg-gray-800 rounded-lg shadow-md flex px-6 py-6'>
-                    <div className='relative flex-none'>
-                      <Link to={`/singlegame?id=${game.id}`}>
-                        <div className='popular-card-img'>
-                          <img
-                            src={game.background_image}
-                            alt={game.name}
-                            className='hover:opacity-75 transition ease-in-out duration-150'
-                            style={{ height: '100%', width: '100%' }}
-                          />
-                        </div>
-                      </Link>
-
-                      <div className='absolute -bottom-2 -right-5  w-16 h-16 bg-gray-800 rounded-full'>
-                        <div className='font-semibold text-xs flex justify-center items-center h-full'>
-                          80%
+                    <div className=''>
+                      <div className='relative flex-none'>
+                        <Link to={`/singlegame?id=${game.id}`}>
+                          <div className='popular-card-img'>
+                            <img
+                              src={game.background_image}
+                              alt={game.name}
+                              className='hover:opacity-75 transition ease-in-out duration-150'
+                              style={{ height: '100%', width: '100%' }}
+                            />
+                          </div>
+                        </Link>
+                        <div className='absolute -bottom-2 -right-5  w-16 h-16 bg-gray-800 rounded-full'>
+                          <div className='font-semibold text-xs flex justify-center items-center h-full'>
+                            {game.metacritic ? `${game.metacritic}%` : `N/A`}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -116,7 +120,16 @@ export default function Main () {
                         className='block text-lg font-semibold leading-tight hover:text-gray-400 mt-4'
                       ></Link>
 
-                      <div className='text-gray-400 mt-1'>Playstation 4</div>
+                      <div className='text-gray-400 mt-1'>
+                        {' '}
+                        {game?.platforms?.map((os, i, arr) => {
+                          if (arr.length - 1 === i) {
+                            return <span> {os.platform.name}</span>
+                          } else {
+                            return <span> {os.platform.name},</span>
+                          }
+                        })}
+                      </div>
                       {/* {getGameDetails(game.id).then(d => {
                         return (
                           <p className='mt-6 text-gray-400 hidden lg:block'>
@@ -124,45 +137,12 @@ export default function Main () {
                           </p>
                         )
                       })} */}
-                      <p className='mt-6 text-gray-400 hidden lg:block'>
-                        {/* {d?.data?.description_raw}{' '} */}
-                      </p>
+                      {/* {d?.data?.description_raw}{' '} */}
+                      <Description id={game.id} />
                     </div>
                   </div>
                 )
-              })}
-            <div className='game bg-gray-800 rounded-lg shadow-md flex px-6 py-6'>
-              <div className='relative flex-none'>
-                <Link to={'/singlegame'}>
-                  <img
-                    src={ff7}
-                    alt='ff7'
-                    className='hover:opacity-75 transition ease-in-out duration-150'
-                  />
-                </Link>
-
-                <div className='absolute -bottom-2 -right-5  w-16 h-16 bg-gray-800 rounded-full'>
-                  <div className='font-semibold text-xs flex justify-center items-center h-full'>
-                    80%
-                  </div>
-                </div>
-              </div>
-              <div className='ml-6 lg:ml-12'>
-                <Link
-                  to={'/singlegame'}
-                  className='block text-lg font-semibold leading-tight hover:text-gray-400 mt-4'
-                ></Link>
-
-                <div className='text-gray-400 mt-1'>Playstation 4</div>
-                <p className='mt-6 text-gray-400 hidden lg:block'>
-                  A spectacular re-imagining of one of the most visionary games
-                  ever, Final Fantasy VII Remake rebuilds and expands the
-                  legendary RPG for today. The first game in this project will
-                  be set in the eclectic city of Midgar and presents a fully
-                  standalone gaming experience.
-                </p>
-              </div>
-            </div>
+              })}{' '}
           </div>
         </div>
         <div className='most-anticipated lg:w-1/4 mt-12 lg:mt-0'>
@@ -187,9 +167,7 @@ export default function Main () {
                   </Link>
 
                   <div className='ml-4'>
-                    <Link to={'/singlegame'} className='hover:text-gray-300'>
-                      {game.name}
-                    </Link>
+                    <Link to={`/singlegame?id=${game.id}`}>{game.name}</Link>
 
                     <div className='text-gray-400 text-sm mt-1'>
                       {`${
@@ -222,5 +200,24 @@ export default function Main () {
         </div>
       </div>
     </div>
+  )
+}
+const Description = ({ id }) => {
+  const [gdata, setGdata] = useState({})
+  async function descData () {
+    try {
+      const { data } = await getGameDetails(id)
+      setGdata(data)
+    } catch (err) {
+      alert(err)
+    }
+  }
+  useEffect(() => {
+    descData()
+  }, [])
+  return (
+    <p className='mt-6 text-gray-400 hidden lg:block'>
+      {gdata?.description_raw}{' '}
+    </p>
   )
 }
