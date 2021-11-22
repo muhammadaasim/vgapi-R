@@ -2,10 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import '../App.css'
 import ff7 from '../assets/ff7.jpg'
-import alyx from '../assets/alyx.jpg'
-import animalcrossing from '../assets/animalcrossing.jpg'
-import avengers from '../assets/avengers.jpg'
-import cyberpunk from '../assets/cyberpunk.jpg'
+import animalcrossing from '../assets/alyx.jpg'
 import { getGames } from '../apiServices/games'
 
 export default function Main () {
@@ -25,33 +22,109 @@ export default function Main () {
           games?.results?.map(d => {
             return (
               <div className='game mt-8'>
-                <div className='relative inline-block'>
-                  <Link to={'/singlegame'}>
+                <div className='relative inline-block card-size'>
+                  <Link to={`/singlegame?id=${d.id}`}>
                     <div className='card-img'>
                       <img
                         src={d.background_image}
-                        alt='ff7'
+                        alt={d.name}
                         className='hover:opacity-75 transition ease-in-out duration-150 img-size'
                       />
+                      <div className='absolute percentage-box  w-16 h-16 bg-gray-800 rounded-full'>
+                        <div className='font-semibold text-xs flex justify-center items-center h-full'>
+                          {/* 80% */}
+                          {d.rating}
+                        </div>
+                      </div>
                     </div>
                   </Link>
-                  <div className='absolute bottom-12 -right-1  w-16 h-16 bg-gray-800 rounded-full'>
-                    <div className='font-semibold text-xs flex justify-center items-center h-full'>
-                      80%
-                    </div>
-                  </div>
+
                   <Link
-                    to={'/singlegame'}
-                    className='block text-base font-semibold leading-tight hover:text-gray-400 mt-8'
+                    to={`/singlegame?id=${d.id}`}
+                    className='block text-base font-semibold leading-tight hover:text-gray-400 mt-6'
                   >
                     {d?.name}
                   </Link>
-                  <div className='text-gray-400 mt-1'>Playstation 4</div>
+                  <div className='text-gray-400 mt-1'>
+                    {d?.platforms?.map(os => (
+                      <span> {os.platform.name}</span>
+                    ))}
+                  </div>
                 </div>
               </div>
             )
           })}
+        <div className='game mt-8'>
+          <div className='relative inline-block'>
+            <Link to={{ pathname: '/singlegame' }}>
+              <img
+                src={ff7}
+                alt='ff7'
+                className='hover:opacity-75 transition ease-in-out duration-150'
+              />
+            </Link>
+            <div className='absolute bottom-12 -right-1  w-16 h-16 bg-gray-800 rounded-full'>
+              <div className='font-semibold text-xs flex justify-center items-center h-full'>
+                80%
+              </div>
+            </div>
+            <Link
+              to={'/singlegame'}
+              className='block text-base font-semibold leading-tight hover:text-gray-400 mt-8'
+            >
+              Final Fantasy VII Remake
+            </Link>
+            <div className='text-gray-400 mt-1'>Playstation 4</div>
+          </div>
+        </div>
+        <div className='game mt-8'>
+          <div className='relative inline-block'>
+            <Link to={'/singlegame'}>
+              <img
+                src={ff7}
+                alt='alyx'
+                className='hover:opacity-75 transition ease-in-out duration-150'
+              />
+            </Link>
+            <div className='absolute bottom-12 -right-1  w-16 h-16 bg-gray-800 rounded-full'>
+              <div className='font-semibold text-xs flex justify-center items-center h-full'>
+                80%
+              </div>
+            </div>
+            <Link
+              to={'/singlegame'}
+              className='block text-base font-semibold leading-tight hover:text-gray-400 mt-8'
+            >
+              Final Fantasy VII Remake
+            </Link>
+            <div className='text-gray-400 mt-1'>Playstation 4</div>
+          </div>
+        </div>
+        <div className='game mt-8'>
+          <div className='relative inline-block'>
+            <Link to={'/singlegame'}>
+              <img
+                src={ff7}
+                alt='animalcrossing'
+                className='hover:opacity-75 transition ease-in-out duration-150'
+              />
+            </Link>
+            <div className='absolute bottom-12 -right-1  w-16 h-16 bg-gray-800 rounded-full'>
+              <div className='font-semibold text-xs flex justify-center items-center h-full'>
+                80%
+              </div>
+            </div>
+            <Link
+              to={'/singlegame'}
+              className='block text-base font-semibold leading-tight hover:text-gray-400 mt-8'
+            >
+              Final Fantasy VII Remake
+            </Link>
+            <div className='text-gray-400 mt-1'>Playstation 4</div>
+          </div>
+        </div>
       </div>
+
       {/* end popular-games  */}
       <div className='flex flex-col lg:flex-row my-10'>
         <div className='recently-reviewed w-full lg:w-3/4 mr-0 lg:mr-32'>
