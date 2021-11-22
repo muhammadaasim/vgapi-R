@@ -34,11 +34,18 @@ export default function SingleGame (props) {
             {game && game?.name}
           </h2>
           <div className='text-gray-400'>
-            <span>Adventure, RPG</span>
+            {/* <span>Adventure, RPG</span>
             &middot;
             <span>Square Enix</span>
             &middot;
-            <span>Playstation 4</span>
+            <span>Playstation 4</span> */}
+            {game?.platforms?.map((os, i, arr) => {
+              if (arr.length - 1 === i) {
+                return <span> {os.platform.name}</span>
+              } else {
+                return <span> {os.platform.name},</span>
+              }
+            })}
           </div>
           <div className='flex flex-wrap items-center mt-8'>
             {/*             <div className="flex items-center">
@@ -135,19 +142,20 @@ export default function SingleGame (props) {
           Screenshots{' '}
         </h2>
         <div className='grid gird-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mt-8'>
-          {screenshots && screenshots.map(shot => {
-            return (
-              <div>
-                <a href='/'>
-                  <img
-                    src={shot?.image}
-                    alt='screenshot'
-                    className='hover:opacity-75 transition ease-in-out duration-150'
-                  ></img>
-                </a>
-              </div>
-            )
-          })}
+          {screenshots &&
+            screenshots.map(shot => {
+              return (
+                <div>
+                  <a href='/'>
+                    <img
+                      src={shot?.image}
+                      alt='screenshot'
+                      className='hover:opacity-75 transition ease-in-out duration-150'
+                    ></img>
+                  </a>
+                </div>
+              )
+            })}
         </div>
       </div>{' '}
       {/* end images container */}

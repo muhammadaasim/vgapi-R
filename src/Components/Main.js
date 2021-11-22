@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import '../App.css'
 import ff7 from '../assets/ff7.jpg'
-import animalcrossing from '../assets/alyx.jpg'
 import {
   getGames,
   getUpcomingGames,
@@ -114,32 +113,21 @@ export default function Main () {
                         </div>
                       </div>
                     </div>
-                    <div className='ml-6 lg:ml-12'>
-                      <Link
-                        to={'/singlegame'}
-                        className='block text-lg font-semibold leading-tight hover:text-gray-400 mt-4'
-                      ></Link>
-
-                      <div className='text-gray-400 mt-1'>
-                        {' '}
-                        {game?.platforms?.map((os, i, arr) => {
-                          if (arr.length - 1 === i) {
-                            return <span> {os.platform.name}</span>
-                          } else {
-                            return <span> {os.platform.name},</span>
-                          }
-                        })}
+                    <Link to={`/singlegame?id=${game.id}`}>
+                      <div className='ml-6 lg:ml-12'>
+                        <div className='text-gray-400 mt-1'>
+                          {' '}
+                          {game?.platforms?.map((os, i, arr) => {
+                            if (arr.length - 1 === i) {
+                              return <span> {os.platform.name}</span>
+                            } else {
+                              return <span> {os.platform.name},</span>
+                            }
+                          })}
+                        </div>
+                        <Description id={game.id} />
                       </div>
-                      {/* {getGameDetails(game.id).then(d => {
-                        return (
-                          <p className='mt-6 text-gray-400 hidden lg:block'>
-                            {d?.data?.description_raw}{' '}
-                          </p>
-                        )
-                      })} */}
-                      {/* {d?.data?.description_raw}{' '} */}
-                      <Description id={game.id} />
-                    </div>
+                    </Link>
                   </div>
                 )
               })}{' '}
@@ -152,7 +140,6 @@ export default function Main () {
           <div className='most-anticipated-container space-y-10 mt-8'>
             {upComingGames.map(game => {
               const date = new Date(game?.released)
-              // month[date?.getMonth()]
               return (
                 <div className='game flex'>
                   <Link to={`/singlegame?id=${game.id}`}>
@@ -178,24 +165,6 @@ export default function Main () {
                 </div>
               )
             })}
-
-            <div className='game flex'>
-              <Link to={'/singlegame'}>
-                <img
-                  src={ff7}
-                  alt='ff7'
-                  className='hover:opacity-75 transition ease-in-out duration-150'
-                />
-              </Link>
-
-              <div className='ml-4'>
-                <Link to={'/singlegame'} className='hover:text-gray-300'>
-                  Doom
-                </Link>
-
-                <div className='text-gray-400 text-sm mt-1'>Sept 16, 2020</div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
