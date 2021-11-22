@@ -3,14 +3,39 @@ import { Link } from 'react-router-dom'
 import '../App.css'
 import ff7 from '../assets/ff7.jpg'
 import animalcrossing from '../assets/alyx.jpg'
-import { getGames } from '../apiServices/games'
+import {
+  getGames,
+  getUpcomingGames,
+  getPopularGames,
+  getGameDetails
+} from '../apiServices/games'
 
 export default function Main () {
   const [games, setGames] = useState([])
+  const [upComingGames, setUpComingGames] = useState([])
+  const [popularGames, setPopularGames] = useState([])
   useEffect(async () => {
     const res = await getGames()
+    const { data } = await getUpcomingGames()
+    setUpComingGames(data.results)
+    const pgames = await getPopularGames()
     setGames(res.data)
+    setPopularGames(pgames.data.results)
   }, [])
+  const month = new Array()
+  month[0] = 'Jan'
+  month[1] = 'Feb'
+  month[2] = 'Mar'
+  month[3] = 'Apr'
+  month[4] = 'May'
+  month[5] = 'Jun'
+  month[6] = 'Jul'
+  month[7] = 'Aug'
+  month[8] = 'Sep'
+  month[9] = 'Oct'
+  month[10] = 'Nov'
+  month[11] = 'Dec'
+
   return (
     <div className='container mx-auto px-4'>
       <h2 className='text-blue-500 uppercase tracking-wide font-semibold'>
@@ -33,12 +58,11 @@ export default function Main () {
                       <div className='absolute percentage-box  w-16 h-16 bg-gray-800 rounded-full'>
                         <div className='font-semibold text-xs flex justify-center items-center h-full'>
                           {/* 80% */}
-                          {d.rating}
+                          {d.metacritic}%
                         </div>
                       </div>
                     </div>
                   </Link>
-
                   <Link
                     to={`/singlegame?id=${d.id}`}
                     className='block text-base font-semibold leading-tight hover:text-gray-400 mt-6'
@@ -54,75 +78,6 @@ export default function Main () {
               </div>
             )
           })}
-        <div className='game mt-8'>
-          <div className='relative inline-block'>
-            <Link to={{ pathname: '/singlegame' }}>
-              <img
-                src={ff7}
-                alt='ff7'
-                className='hover:opacity-75 transition ease-in-out duration-150'
-              />
-            </Link>
-            <div className='absolute bottom-12 -right-1  w-16 h-16 bg-gray-800 rounded-full'>
-              <div className='font-semibold text-xs flex justify-center items-center h-full'>
-                80%
-              </div>
-            </div>
-            <Link
-              to={'/singlegame'}
-              className='block text-base font-semibold leading-tight hover:text-gray-400 mt-8'
-            >
-              Final Fantasy VII Remake
-            </Link>
-            <div className='text-gray-400 mt-1'>Playstation 4</div>
-          </div>
-        </div>
-        <div className='game mt-8'>
-          <div className='relative inline-block'>
-            <Link to={'/singlegame'}>
-              <img
-                src={ff7}
-                alt='alyx'
-                className='hover:opacity-75 transition ease-in-out duration-150'
-              />
-            </Link>
-            <div className='absolute bottom-12 -right-1  w-16 h-16 bg-gray-800 rounded-full'>
-              <div className='font-semibold text-xs flex justify-center items-center h-full'>
-                80%
-              </div>
-            </div>
-            <Link
-              to={'/singlegame'}
-              className='block text-base font-semibold leading-tight hover:text-gray-400 mt-8'
-            >
-              Final Fantasy VII Remake
-            </Link>
-            <div className='text-gray-400 mt-1'>Playstation 4</div>
-          </div>
-        </div>
-        <div className='game mt-8'>
-          <div className='relative inline-block'>
-            <Link to={'/singlegame'}>
-              <img
-                src={ff7}
-                alt='animalcrossing'
-                className='hover:opacity-75 transition ease-in-out duration-150'
-              />
-            </Link>
-            <div className='absolute bottom-12 -right-1  w-16 h-16 bg-gray-800 rounded-full'>
-              <div className='font-semibold text-xs flex justify-center items-center h-full'>
-                80%
-              </div>
-            </div>
-            <Link
-              to={'/singlegame'}
-              className='block text-base font-semibold leading-tight hover:text-gray-400 mt-8'
-            >
-              Final Fantasy VII Remake
-            </Link>
-            <div className='text-gray-400 mt-1'>Playstation 4</div>
-          </div>
-        </div>
       </div>
 
       {/* end popular-games  */}
@@ -131,7 +86,51 @@ export default function Main () {
           <h2 className='text-blue-500 uppercase tracking-wide font-semibold'>
             Popular Games
           </h2>
+          {console.log('pop games', popularGames)}
           <div className='recently-reviewed-container space-y-12 mt-8'>
+            {popularGames &&
+              popularGames.map(game => {
+                return (
+                  <div className='game bg-gray-800 rounded-lg shadow-md flex px-6 py-6'>
+                    <div className='relative flex-none'>
+                      <Link to={`/singlegame?id=${game.id}`}>
+                        <div className='popular-card-img'>
+                          <img
+                            src={game.background_image}
+                            alt={game.name}
+                            className='hover:opacity-75 transition ease-in-out duration-150'
+                            style={{ height: '100%', width: '100%' }}
+                          />
+                        </div>
+                      </Link>
+
+                      <div className='absolute -bottom-2 -right-5  w-16 h-16 bg-gray-800 rounded-full'>
+                        <div className='font-semibold text-xs flex justify-center items-center h-full'>
+                          80%
+                        </div>
+                      </div>
+                    </div>
+                    <div className='ml-6 lg:ml-12'>
+                      <Link
+                        to={'/singlegame'}
+                        className='block text-lg font-semibold leading-tight hover:text-gray-400 mt-4'
+                      ></Link>
+
+                      <div className='text-gray-400 mt-1'>Playstation 4</div>
+                      {/* {getGameDetails(game.id).then(d => {
+                        return (
+                          <p className='mt-6 text-gray-400 hidden lg:block'>
+                            {d?.data?.description_raw}{' '}
+                          </p>
+                        )
+                      })} */}
+                      <p className='mt-6 text-gray-400 hidden lg:block'>
+                        {/* {d?.data?.description_raw}{' '} */}
+                      </p>
+                    </div>
+                  </div>
+                )
+              })}
             <div className='game bg-gray-800 rounded-lg shadow-md flex px-6 py-6'>
               <div className='relative flex-none'>
                 <Link to={'/singlegame'}>
@@ -164,73 +163,6 @@ export default function Main () {
                 </p>
               </div>
             </div>
-            {/* end game */}
-            <div className='game bg-gray-800 rounded-lg shadow-md flex px-6 py-6'>
-              <div className='relative flex-none'>
-                <Link to={'/singlegame'}>
-                  <img
-                    src={ff7}
-                    alt='ff7'
-                    className='hover:opacity-75 transition ease-in-out duration-150'
-                  />
-                </Link>
-
-                <div className='absolute -bottom-2 -right-5  w-16 h-16 bg-gray-800 rounded-full'>
-                  <div className='font-semibold text-xs flex justify-center items-center h-full'>
-                    80%
-                  </div>
-                </div>
-              </div>
-              <div className='ml-6 lg:ml-12'>
-                <Link
-                  to={'/singlegame'}
-                  className='block text-lg font-semibold leading-tight hover:text-gray-400 mt-4'
-                ></Link>
-
-                <div className='text-gray-400 mt-1'>Playstation 4</div>
-                <p className='mt-6 text-gray-400 hidden lg:block'>
-                  A spectacular re-imagining of one of the most visionary games
-                  ever, Final Fantasy VII Remake rebuilds and expands the
-                  legendary RPG for today. The first game in this project will
-                  be set in the eclectic city of Midgar and presents a fully
-                  standalone gaming experience.
-                </p>
-              </div>
-            </div>
-            {/* end game */}
-            <div className='game bg-gray-800 rounded-lg shadow-md flex px-6 py-6'>
-              <div className='relative flex-none'>
-                <Link to={'/singlegame'}>
-                  <img
-                    src={ff7}
-                    alt='ff7'
-                    className='hover:opacity-75 transition ease-in-out duration-150'
-                  />
-                </Link>
-
-                <div className='absolute -bottom-2 -right-5  w-16 h-16 bg-gray-800 rounded-full'>
-                  <div className='font-semibold text-xs flex justify-center items-center h-full'>
-                    80%
-                  </div>
-                </div>
-              </div>
-              <div className='ml-6 lg:ml-12'>
-                <Link
-                  to={'/singlegame'}
-                  className='block text-lg font-semibold leading-tight hover:text-gray-400 mt-4'
-                ></Link>
-
-                <div className='text-gray-400 mt-1'>Playstation 4</div>
-                <p className='mt-6 text-gray-400 hidden lg:block'>
-                  A spectacular re-imagining of one of the most visionary games
-                  ever, Final Fantasy VII Remake rebuilds and expands the
-                  legendary RPG for today. The first game in this project will
-                  be set in the eclectic city of Midgar and presents a fully
-                  standalone gaming experience.
-                </p>
-              </div>
-            </div>
-            {/* end game */}
           </div>
         </div>
         <div className='most-anticipated lg:w-1/4 mt-12 lg:mt-0'>
@@ -238,57 +170,37 @@ export default function Main () {
             Upcoming Games
           </h2>
           <div className='most-anticipated-container space-y-10 mt-8'>
-            <div className='game flex'>
-              <Link to={'/singlegame'}>
-                <img
-                  src={ff7}
-                  alt='ff7'
-                  className='hover:opacity-75 transition ease-in-out duration-150'
-                />
-              </Link>
+            {upComingGames.map(game => {
+              const date = new Date(game?.released)
+              // month[date?.getMonth()]
+              return (
+                <div className='game flex'>
+                  <Link to={`/singlegame?id=${game.id}`}>
+                    <div className='upcoming-img-box'>
+                      <img
+                        src={game.background_image}
+                        alt={game.name}
+                        className='hover:opacity-75 upcoming-img transition ease-in-out duration-150'
+                        style={{ width: '100%', height: '100%' }}
+                      />
+                    </div>
+                  </Link>
 
-              <div className='ml-4'>
-                <Link to={'/singlegame'} className='hover:text-gray-300'>
-                  Doom
-                </Link>
+                  <div className='ml-4'>
+                    <Link to={'/singlegame'} className='hover:text-gray-300'>
+                      {game.name}
+                    </Link>
 
-                <div className='text-gray-400 text-sm mt-1'>Sept 16, 2020</div>
-              </div>
-            </div>
-            <div className='game flex'>
-              <Link to={'/singlegame'}>
-                <img
-                  src={ff7}
-                  alt='ff7'
-                  className='hover:opacity-75 transition ease-in-out duration-150'
-                />
-              </Link>
+                    <div className='text-gray-400 text-sm mt-1'>
+                      {`${
+                        month[date?.getMonth()]
+                      } ${date.getDate()} ${date.getFullYear()} `}
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
 
-              <div className='ml-4'>
-                <Link to={'/singlegame'} className='hover:text-gray-300'>
-                  Doom
-                </Link>
-
-                <div className='text-gray-400 text-sm mt-1'>Sept 16, 2020</div>
-              </div>
-            </div>
-            <div className='game flex'>
-              <Link to={'/singlegame'}>
-                <img
-                  src={ff7}
-                  alt='ff7'
-                  className='hover:opacity-75 transition ease-in-out duration-150'
-                />
-              </Link>
-
-              <div className='ml-4'>
-                <Link to={'/singlegame'} className='hover:text-gray-300'>
-                  Doom
-                </Link>
-
-                <div className='text-gray-400 text-sm mt-1'>Sept 16, 2020</div>
-              </div>
-            </div>
             <div className='game flex'>
               <Link to={'/singlegame'}>
                 <img

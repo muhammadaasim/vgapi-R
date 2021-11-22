@@ -13,14 +13,12 @@ export default function SingleGame (props) {
     const { data } = await getGameDetails(id)
     setGame(data)
     const screenshots = await getScreenshots(id)
-    setScreenshots(screenshots?.data.results)
-  }, [game,screenshots])
+    setScreenshots(screenshots?.data?.results)
+  }, [game, screenshots])
 
   useEffect(() => {
     getApiData()
   }, [])
-  const description =
-    game && game?.description?.replace(/<[^>]+>/g, '')
   return (
     <div className='container mx-auto px-4'>
       <div className='game-details border-b border-gray-800 pb-12 flex flex-col lg:flex-row'>
@@ -57,7 +55,7 @@ export default function SingleGame (props) {
               <div className='w-16 h-16 bg-gray-800 rounded-full'>
                 <div className='font-semibold text-xs flex justify-center items-center h-full'>
                   {/* 83% */}
-                  {game.rating}
+                  {game.metacritic}%
                 </div>
               </div>
               <div className='ml-4 text-xs'>
@@ -118,7 +116,7 @@ export default function SingleGame (props) {
               </div>
             </div>
           </div>
-          <p className='mt-12'>{description}</p>
+          <p className='mt-12'>{game && game.description_raw}</p>
           <div className='mt-12'>
             <button className='flex bg-blue-500 text-white font-semibold px-4 py-4 hover:bg-blue-600 rounded transition ease-in-out duration-150'>
               <svg className='w-6 fill-current' viewBox='0 0 24 24'>
@@ -137,7 +135,7 @@ export default function SingleGame (props) {
           Screenshots{' '}
         </h2>
         <div className='grid gird-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mt-8'>
-          {screenshots.map(shot => {
+          {screenshots && screenshots.map(shot => {
             return (
               <div>
                 <a href='/'>
