@@ -64,7 +64,7 @@ export default function Main () {
                   </Link>
                   <Link
                     to={`/singlegame?id=${d.id}`}
-                    className='block text-base font-semibold leading-tight hover:text-gray-400 mt-6'
+                    className='block text-base font-semibold leading-tight hover:text-gray-400 mt-9'
                   >
                     {d?.name}
                   </Link>
