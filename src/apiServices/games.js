@@ -91,3 +91,15 @@ export const getPopularGames = async () => {
     }
   }
 }
+
+export const searchGame = async gamename => {
+  try {
+    return await api.get(
+      `${GAMES}?search=${gamename}&key=${process.env.REACT_APP_API_KEY}`
+    )
+  } catch (err) {
+    return {
+      error: err
+    }
+  }
+}

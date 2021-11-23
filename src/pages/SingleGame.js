@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import ff7 from '../assets/ff7.jpg'
 import screenshot1 from '../assets/screenshot1.jpg'
-import { useLocation } from 'react-router'
+import { useLocation, useParams } from 'react-router'
 import '../App.css'
 import { getGameDetails, getScreenshots } from '../apiServices/games'
 export default function SingleGame (props) {
-  const search = useLocation().search
-  const id = new URLSearchParams(search).get('id')
+  const { id } = useParams()
+  // const search = useLocation().search
+  // const id = new URLSearchParams(search).get('id')
   const [game, setGame] = useState([])
   const [screenshots, setScreenshots] = useState([])
   const getApiData = useCallback(async () => {
@@ -62,7 +63,7 @@ export default function SingleGame (props) {
               <div className='w-16 h-16 bg-gray-800 rounded-full'>
                 <div className='font-semibold text-xs flex justify-center items-center h-full'>
                   {/* 83% */}
-                  {game.metacritic}%
+                  {game.metacritic ? `${game.metacritic} %` : 'N/A'}
                 </div>
               </div>
               <div className='ml-4 text-xs'>

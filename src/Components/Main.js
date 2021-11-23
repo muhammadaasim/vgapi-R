@@ -6,7 +6,8 @@ import {
   getGames,
   getUpcomingGames,
   getPopularGames,
-  getGameDetails
+  getGameDetails,
+  searchGame
 } from '../apiServices/games'
 
 export default function Main () {
@@ -34,7 +35,6 @@ export default function Main () {
   month[9] = 'Oct'
   month[10] = 'Nov'
   month[11] = 'Dec'
-
   return (
     <div className='container mx-auto px-4'>
       <h2 className='text-blue-500 uppercase tracking-wide font-semibold'>
@@ -47,7 +47,7 @@ export default function Main () {
             return (
               <div className='game mt-8'>
                 <div className='relative inline-block card-size'>
-                  <Link to={`/singlegame?id=${d.id}`}>
+                  <Link to={`/singlegame/${d.id}`}>
                     <div className='card-img'>
                       <img
                         src={d.background_image}
@@ -63,7 +63,7 @@ export default function Main () {
                     </div>
                   </Link>
                   <Link
-                    to={`/singlegame?id=${d.id}`}
+                    to={`/singlegame/${d.id}`}
                     className='block text-base font-semibold leading-tight hover:text-gray-400 mt-9'
                   >
                     {d?.name}
@@ -96,7 +96,7 @@ export default function Main () {
                   <div className='game bg-gray-800 rounded-lg shadow-md flex px-6 py-6'>
                     <div className=''>
                       <div className='relative flex-none'>
-                        <Link to={`/singlegame?id=${game.id}`}>
+                        <Link to={`/singlegame/${game.id}`}>
                           <div className='popular-card-img'>
                             <img
                               src={game.background_image}
@@ -113,8 +113,10 @@ export default function Main () {
                         </div>
                       </div>
                     </div>
-                    <Link to={`/singlegame?id=${game.id}`}>
+                    <Link to={`/singlegame/${game.id}`}>
                       <div className='ml-6 lg:ml-12'>
+                        <Link to={`/singlegame/${game.id}`}>{game.name}</Link>
+
                         <div className='text-gray-400 mt-1'>
                           {' '}
                           {game?.platforms?.map((os, i, arr) => {
@@ -142,7 +144,7 @@ export default function Main () {
               const date = new Date(game?.released)
               return (
                 <div className='game flex'>
-                  <Link to={`/singlegame?id=${game.id}`}>
+                  <Link to={`/singlegame/${game.id}`}>
                     <div className='upcoming-img-box'>
                       <img
                         src={game.background_image}
@@ -154,7 +156,7 @@ export default function Main () {
                   </Link>
 
                   <div className='ml-4'>
-                    <Link to={`/singlegame?id=${game.id}`}>{game.name}</Link>
+                    <Link to={`/singlegame/${game.id}`}>{game.name}</Link>
 
                     <div className='text-gray-400 text-sm mt-1'>
                       {`${

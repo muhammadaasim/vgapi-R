@@ -19,7 +19,7 @@ function App() {
         <Switch>
           <Link>
             <Route exact path="/" component={Main} />
-            <Route path="/singlegame" component={SingleGame} />
+            <Route path="/singlegame/:id" component={SingleGame} />
           </Link>
         </Switch>
         <Footer />
